@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [4.3.0] - 2026-04-02
+
+### Changed
+
+- Updates the version of dependency **io.github.idreamsofgame.unisharper.core**.
+- Rename class **AesCryptoProvider** to **AesEcbCryptoProvider** to provide AES encryption and decryption functionality using ECB.
+
+
+
+### Added
+
+- Adds new class **AesCbcCryptoProvider** to provide AES encryption and decryption functionality using CBC.
+
+
+
 ## [4.2.0] - 2025-10-13
 
 ### Added

@@ -19,8 +19,6 @@ namespace UniSharper.Data.SaveGame
     /// </summary>
     public class SaveGameManager : ISaveGameManager
     {
-        private const int EncryptionKeyLength = 16;
-
         public static readonly Encoding DefaultEncoding = Encoding.UTF8;
 
         private static readonly string EditorDefaultStorePath = PathUtility.UnifyToAltDirectorySeparatorChar(Path.Combine(Directory.GetCurrentDirectory(), "Saves"));
@@ -43,7 +41,7 @@ namespace UniSharper.Data.SaveGame
                 : Application.isEditor 
                     ? EditorDefaultStorePath
                     : RuntimeDefaultStorePath;
-            CryptoProvider = cryptoProvider ?? new AesCryptoProvider();
+            CryptoProvider = cryptoProvider ?? new AesEcbCryptoProvider();
             CompressionProvider = compressionProvider ?? new DeflateCompressionProvider();
         }
 
@@ -145,10 +143,10 @@ namespace UniSharper.Data.SaveGame
                 if (encryptionFlag)
                 {
                     // Need to decrypt data.
-                    var key = reader.ReadBytes(EncryptionKeyLength);
+                    var key = reader.ReadBytes(CryptoProvider.EncryptionKeyLength);
                     var compressionFlagRawData = reader.ReadBytes(1);
                     var compressionFlag = BitConverter.ToBoolean(compressionFlagRawData, 0);
-                    var cipherData = reader.ReadBytes(data.Length - encryptionFlagRawData.Length - EncryptionKeyLength - compressionFlagRawData.Length);
+                    var cipherData = reader.ReadBytes(data.Length - encryptionFlagRawData.Length - CryptoProvider.EncryptionKeyLength - compressionFlagRawData.Length);
                     var content = CryptoProvider.Decrypt(cipherData, key);
                     return compressionFlag ? CompressionProvider.Decompress(content) : content;
                 }
@@ -202,7 +200,7 @@ namespace UniSharper.Data.SaveGame
 
                 if (encrypt)
                 {
-                    var key = CryptoUtility.GenerateRandomKey(EncryptionKeyLength);
+                    var key = CryptoUtility.GenerateRandomKey(CryptoProvider.EncryptionKeyLength);
                     var output = compress ? CompressionProvider.Compress(data) : data;
                     var cipherData = CryptoProvider.Encrypt(output, key);
                     fileStream.SetLength(encryptionFlag.Length + key.Length + compressionFlag.Length + cipherData.Length);
@@ -269,8 +267,8 @@ namespace UniSharper.Data.SaveGame
                     return reader.ReadBytes(fileData.Length - encryptionFlagRawData.Length);
                     
                 // Need to decrypt data.
-                var key = reader.ReadBytes(EncryptionKeyLength);
-                var cipherData = reader.ReadBytes(fileData.Length - encryptionFlagRawData.Length - EncryptionKeyLength);
+                var key = reader.ReadBytes(CryptoProvider.EncryptionKeyLength);
+                var cipherData = reader.ReadBytes(fileData.Length - encryptionFlagRawData.Length - CryptoProvider.EncryptionKeyLength);
                 return CryptoProvider.Decrypt(cipherData, key);
             }
             catch (Exception e)

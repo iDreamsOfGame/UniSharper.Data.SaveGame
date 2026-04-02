@@ -9,6 +9,11 @@ namespace UniSharper.Data.SaveGame.Providers
     public interface ICryptoProvider
     {
         /// <summary>
+        /// Gets the length of the encryption key.
+        /// </summary>
+        int EncryptionKeyLength { get; }
+
+        /// <summary>
         /// Encrypts data.
         /// </summary>
         /// <param name="data">The data to encrypt.</param>

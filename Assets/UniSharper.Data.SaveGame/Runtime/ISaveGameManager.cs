@@ -32,7 +32,7 @@ namespace UniSharper.Data.SaveGame
         /// Initializes save game manager.
         /// </summary>
         /// <param name="storePath">The store path where data to save.</param>
-        /// <param name="cryptoProvider">The crypto provider. Sets <c>null</c> to use <see cref="AesCryptoProvider"/>. </param>
+        /// <param name="cryptoProvider">The crypto provider. Sets <c>null</c> to use <see cref="AesEcbCryptoProvider"/>. </param>
         /// <param name="compressionProvider">The compression provider. Sets <c>null</c> to use <see cref="DeflateCompressionProvider"/>. </param>
         void Initialize(string storePath = null, ICryptoProvider cryptoProvider = null, ICompressionProvider compressionProvider = null);
 

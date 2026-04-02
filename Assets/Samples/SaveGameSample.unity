@@ -378,7 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fe66a26b4fe344bb83b1be2fe27309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputFiled: {fileID: 94455451}
+  cipherMode: 1
+  inputField: {fileID: 94455451}
   loadGameButton: {fileID: 1645549260}
 --- !u!1 &247560559
 GameObject:
