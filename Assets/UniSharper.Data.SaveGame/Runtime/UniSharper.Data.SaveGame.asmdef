@@ -1,7 +1,8 @@
 {
-    "name": "Unity.UniSharper.Data.SaveGame",
+    "name": "UniSharper.Data.SaveGame",
+    "rootNamespace": "UniSharper.Data.SaveGame",
     "references": [
-        "Unity.UniSharper"
+        "UniSharper"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
